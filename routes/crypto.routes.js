@@ -5,7 +5,9 @@ import {
     convertToSha512, 
     convertoToSha256, 
     decryptAES, 
-    encryptToAES 
+    decryptToDES, 
+    encryptToAES, 
+    encryptToDES
 } from "../controllers/crypto.controller.js";
 
 const router = express.Router();
@@ -16,6 +18,8 @@ router.route("/sha256").post(convertoToSha256);
 router.route("/sha512").post(convertToSha512);
 router.route("/encryptaes").post(encryptToAES);
 router.route("/decryptaes").post(decryptAES);
+router.route("/encryptdes").post(encryptToDES);
+router.route("/decryptdes").post(decryptToDES);
 
 
 export default router;

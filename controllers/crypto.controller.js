@@ -110,18 +110,13 @@ export const convertToSha512 = async(req,res) => {
 export const encryptToAES = async(req,res) => {
     try{
         const {data,key} = req.body;
-        if(!data){
+        if(!data && !key){
             return res.status(400).json({
                 success:false,
-                message:"Plain text is required "
+                message:"Plain text and key is required "
             })
         }
-        let encryptedText;
-        if(!key){
-            encryptedText = CryptoJS.AES.encrypt(data,"aditya1234raj").toString();
-        }else{
-            encryptedText = CryptoJS.AES.encrypt(data,key).toString();
-        }
+        const encryptedText = CryptoJS.AES.encrypt(data,key).toString();
         res.status(200).json({
             success:true,
             encryptedText:encryptedText
@@ -135,6 +130,9 @@ export const encryptToAES = async(req,res) => {
     }
 }
 
+/**
+ * Controller function to decrypt AES
+ */
 export const decryptAES = async(req,res) => {
     try{
         const {ciphertext,key} = req.body;
@@ -158,3 +156,48 @@ export const decryptAES = async(req,res) => {
     }
 }
 
+export const encryptToDES = async(req,res) => {
+    try{
+        const {data,key} = req.body;
+        if(!data && !key){
+            return res.status(400).json({
+                success:false,
+                message:"Data and key is required !! "
+            })
+        }
+        const encryptedText = CryptoJS.DES.encrypt(data,key).toString();
+        res.status(200).json({
+            success:true,
+            encryptedText:encryptedText
+        })
+
+    }catch(err){
+        res.status(500).json({
+            success:false,
+            message:"Internal server error !!"
+        })
+    }
+}
+
+export const decryptToDES = async(req,res) => {
+    try{
+        const {ciphertext,key} = req.body;
+        if(!ciphertext && !key){
+            return res.status(400).json({
+                success:false,
+                message:"ciphertext and key is required  !! "
+            })
+        }
+        const decryptedText = CryptoJS.DES.decrypt(ciphertext,key).toString(CryptoJS.enc.Utf8);
+        res.status(200).json({
+            success:true,
+            decryptedText:decryptedText
+        })
+
+    }catch(err){
+        res.status(500).json({
+            success:false,
+            message:"Internal server error !!"
+        })
+    }
+}
