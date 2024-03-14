@@ -254,3 +254,53 @@ export const decrypt3DES = async(req,res) => {
         })
     }
 }
+
+/**
+ * Controller function to encrypt using blowfish algorithm
+ */
+export const encryptToBlowfish = async(req,res) => {
+    try{
+        const {data,key} = req.body;
+        if(!data && !key){
+            return res.status(400).json({
+                success:false,
+                message:"Bad request !!"
+            })
+        }
+        const encryptedText = CryptoJS.Blowfish.encrypt(data,key).toString();
+        res.status(200).json({
+            success:true,
+            encryptedText:encryptedText
+        })
+    }catch(err){
+        res.status(500).json({
+            success:false,
+            message:"Internal server error !!"
+        })
+    }
+}
+
+/**
+ * Controller function to decrypt using algo blowfish  
+ */
+export const decryptBlowfish = async(req,res) => {
+    try{
+        const {ciphertext,key} = req.body;
+        if(!ciphertext && !key){
+            return res.status(400).json({
+                success:false,
+                message:"Bad request !!"
+            })
+        }
+        const decryptedText = CryptoJS.Blowfish.decrypt(ciphertext,key).toString(CryptoJS.enc.Utf8);
+        res.status(200).json({
+            success:true,
+            decryptedText:decryptedText
+        })
+    }catch(err){
+        res.status(500).json({
+            success:false,
+            message:"Internal server error !!"
+        })
+    }
+}

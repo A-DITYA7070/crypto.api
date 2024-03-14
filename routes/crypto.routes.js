@@ -6,9 +6,11 @@ import {
     convertoToSha256, 
     decrypt3DES, 
     decryptAES, 
+    decryptBlowfish, 
     decryptToDES, 
     encryptTo3DES, 
     encryptToAES, 
+    encryptToBlowfish, 
     encryptToDES
 } from "../controllers/crypto.controller.js";
 
@@ -24,6 +26,8 @@ router.route("/encryptdes").post(encryptToDES);
 router.route("/decryptdes").post(decryptToDES);
 router.route("/encrypt3des").post(encryptTo3DES);
 router.route("/decrypt3des").post(decrypt3DES);
+router.route("/encryptblowfish").post(encryptToBlowfish);
+router.route("/decryptblowfish").post(decryptBlowfish);
 
 
 export default router;
