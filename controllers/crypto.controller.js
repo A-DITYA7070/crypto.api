@@ -179,6 +179,9 @@ export const encryptToDES = async(req,res) => {
     }
 }
 
+/**
+ * Controller function for decryption in DES..
+ */
 export const decryptToDES = async(req,res) => {
     try{
         const {ciphertext,key} = req.body;
@@ -194,6 +197,56 @@ export const decryptToDES = async(req,res) => {
             decryptedText:decryptedText
         })
 
+    }catch(err){
+        res.status(500).json({
+            success:false,
+            message:"Internal server error !!"
+        })
+    }
+}
+
+/**
+ * Controller function to encrypt to 3DES
+ */
+export const encryptTo3DES = async (req,res) => {
+    try{
+        const {data,key} = req.body;
+        if(!data && !key){
+            return res.status(400).json({
+                success:false,
+                message:"Bad request !"
+            })
+        }
+        const encryptedText = CryptoJS.TripleDES.encrypt(data,key).toString();
+        res.status(200).json({
+            success:true,
+            encryptedText:encryptedText
+        })
+    }catch(err){
+        res.status(500).json({
+            success:false,
+            message:"Internal server error !!"
+        })
+    }
+}
+
+/**
+ * Controller function to decrypt 3DES 
+ */
+export const decrypt3DES = async(req,res) => {
+    try{
+        const {ciphertext,key} = req.body;
+        if(!ciphertext && !key){
+            return res.status(400).json({
+                success:false,
+                message:"Bad request !!"
+            })
+        }
+        const decryptedText = CryptoJS.TripleDES.decrypt(ciphertext,key).toString(CryptoJS.enc.Utf8);
+        res.status(200).json({
+            success:true,
+            plainText:decryptedText
+        })
     }catch(err){
         res.status(500).json({
             success:false,
