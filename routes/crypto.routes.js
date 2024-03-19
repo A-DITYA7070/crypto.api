@@ -7,7 +7,9 @@ import {
     decrypt3DES, 
     decryptAES, 
     decryptBlowfish, 
+    decryptRc4, 
     decryptToDES, 
+    encryptRC4, 
     encryptTo3DES, 
     encryptToAES, 
     encryptToBlowfish, 
@@ -28,6 +30,8 @@ router.route("/encrypt3des").post(encryptTo3DES);
 router.route("/decrypt3des").post(decrypt3DES);
 router.route("/encryptblowfish").post(encryptToBlowfish);
 router.route("/decryptblowfish").post(decryptBlowfish);
+router.route("/encryptrc4").post(encryptRC4);
+router.route("/decryptrc4").post(decryptRc4);
 
 
 export default router;

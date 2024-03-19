@@ -304,3 +304,52 @@ export const decryptBlowfish = async(req,res) => {
         })
     }
 }
+
+/**
+ * Controller function to encrypt using RC4
+ */
+export const encryptRC4 = async(req,res) => {
+    try{
+        const {data,key} = req.body;
+        if(!data && !key){
+            return res.status(400).json({
+                success:false,
+                message:"Bad request !! "
+            })
+        }
+        const encryptedText = CryptoJS.RC4.encrypt(data,key).toString();
+        res.status(200).json({
+            success:true,
+            encryptedText:encryptedText
+        })
+
+    }catch(err){
+        res.status(500).json({
+            success:false,
+            message:"Internal server error "
+        })
+    }
+}
+
+export const decryptRc4 = async(req,res) => {
+    try{
+        const {ciphertext,key} = req.body;
+        if(!ciphertext && !key){
+            return res.status(400).json({
+                success:false,
+                message:"Bad request !!"
+            })
+        }
+        const decryptedText = CryptoJS.RC4.decrypt(ciphertext,key).toString(CryptoJS.enc.Utf8);
+        res.status(200).json({
+            success:true,
+            plainText:decryptedText
+        })
+
+    }catch(err){
+        res.status(500).json({
+            success:false,
+            message:"Internal server error !!"
+        })
+    }
+}
