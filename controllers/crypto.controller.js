@@ -1,5 +1,4 @@
 import CryptoJS from "crypto-js";
-import { sendStatus } from "../constants/regular.js";
 
 /**
  * Controller function to generate md5 hash..
@@ -350,6 +349,106 @@ export const decryptRc4 = async(req,res) => {
         res.status(500).json({
             success:false,
             message:"Internal server error !!"
+        })
+    }
+}
+
+/**
+ * Controller function to encrypt plain text using RabbitLegacy 
+ * In this cfg is addition which is used to provide more security. 
+ */
+export const encryptRabbitLegacy = async(req,res) => {
+    try{
+        const {data,key,cfg}= req.body;
+        if(!data && !key && !cfg){
+            return res.status(400).json({
+                success:false,
+                message:"Please enter all the required fields data,key and cfg !!"
+            })
+        }
+        const ciphertext = CryptoJS.RabbitLegacy.encrypt(data,key,cfg).toString();
+        res.status(200).json({
+            success:true,
+            message:ciphertext
+        })
+
+    }catch(err){
+        res.status(500).json({
+            success:false,
+            message:"Internal server error !! "
+        })
+    }
+}
+
+/**
+ * Controller function to decrypt using RabbitLegacy
+ */
+export const decryptRabbitLegacy = async(req,res) => {
+    try{
+        const {ciphertext,key,cfg} = req.body;
+        if(!ciphertext && !key && !cfg){
+            return res.status(400).json({
+                success:false,
+                message:"Please enter all the required fields ciphertext,key and cfg !! "
+            })
+        }
+        const plainText = CryptoJS.RabbitLegacy.decrypt(ciphertext,key,cfg).toString(CryptoJS.enc.Utf8);
+        res.status(200).json({
+            success:true,
+            plainText:plainText
+        })
+
+    }catch(err){
+        res.status(500).json({
+            success:false,
+            message:"Internal server error !! "
+        })
+    }
+}
+
+
+export const encryptRabbit = async(req,res) => {
+    try{
+        const {data,key,cfg} = req.body;
+        if(!data && !key && !cfg){
+            return res.status(400).json({
+                success:false,
+                message:"Please enter all the fields data key and cfg "
+            })
+        }
+        const ciphertext = CryptoJS.Rabbit.encrypt(data,key,cfg).toString();
+        res.status(200).json({
+            success:true,
+            message:ciphertext
+        })
+
+    }catch(err){
+        res.status(500).json({
+            success:false,
+            message:"Internal server error !! "
+        })
+    }
+}
+
+export const decryptRabbit = async(req,res) => {
+    try{
+        const {ciphertext,key,cfg} = req.body;
+        if(!ciphertext && !key && !cfg){
+            return res.status(400).json({
+                success:false,
+                message:"Please enter all the fields ciphertext,key and cfg "
+            })
+        }
+        const plainText = CryptoJS.Rabbit.decrypt(ciphertext,key,cfg).toString(CryptoJS.enc.Utf8);
+        res.status(200).json({
+            success:true,
+            message:plainText
+        })
+
+    }catch(err){
+        res.status(500).json({
+            success:false,
+            message:"Internal server error !! "
         })
     }
 }
